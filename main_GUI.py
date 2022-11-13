@@ -165,14 +165,14 @@ class GUI:
         label_date_start = tk.Label(frame_output,text = "起始日期:")
         label_date_start.grid(row = 4, column = 0)
         self.date_start = DateEntry(frame_output, text='日期选择',width =9)
-        self.date_start.bind("<<DateEntrySelected>>", self.print_date)
+        # self.date_start.bind("<<DateEntrySelected>>", self.print_date)
+        messagebox.showinfo(title='消息提示框', message=sp[0:4]+'/'+sp[4:6]+'/'+sp[6:8])
         self.date_start.set_date(sp[0:4]+'/'+sp[4:6]+'/'+sp[6:8])
         self.date_start.grid(row=4, column=1, padx=3,pady=3,sticky='W')
-
         label_date_end = tk.Label(frame_output,text = "截至日期:")
         label_date_end.grid(row = 4, column = 2)
         self.date_end = DateEntry(frame_output, text='日期选择',width =9)
-        self.date_end.bind("<<DateEntrySelected>>", self.print_date)
+        # self.date_end.bind("<<DateEntrySelected>>", self.print_date)
         self.date_end.set_date(ep[0:4]+'/'+ep[4:6]+'/'+ep[6:8])
         self.date_end.grid(row=4, column=3, padx=3,pady=3,sticky='W')
         
