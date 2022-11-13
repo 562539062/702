@@ -1,0 +1,1 @@
+pyinstaller -F -w main_GUI.py -p settings.py -p functions.py -p plot.py -p Calender.py 

@@ -3,6 +3,7 @@ import os
 import tkinter.messagebox as messagebox
 from time import time
 from fnmatch import fnmatch
+import multiprocessing
 from multiprocessing import Process
 from multiprocessing.sharedctypes import Array
 from threading import Thread
@@ -321,5 +322,6 @@ class GUI:
 
 
 if __name__ == '__main__':
+    multiprocessing.freeze_support()
     a = GUI()
     
