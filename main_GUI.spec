@@ -6,10 +6,10 @@ block_cipher = None
 
 a = Analysis(
     ['main_GUI.py'],
-    pathex=['settings.py', 'functions.py', 'plot.py'],
+    pathex=['settings.py', 'functions.py', 'plot.py', 'Calender.py'],
     binaries=[],
     datas=[],
-    hiddenimports=['settings', 'functions', 'plot'],
+    hiddenimports=[],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],

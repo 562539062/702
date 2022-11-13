@@ -1,7 +1,5 @@
 import openpyxl
-import numpy as np
 import scipy.io as scio 
-import multiprocessing
 
 ############### 固定参数 ###############
 SFreq1=50 # 信号频率
@@ -40,10 +38,16 @@ index_1=[]
 for n in ['A1','A2','A3','M1-Z','M1-X','M1-Y']:
     index_1.append(dict_[n])
 JJ=[i for i, x in enumerate(Signame) if x in ['A1-Heave','A2-Heave','A3-Heave','M1-Heave','M1-Sway','M1-Surge']] #由于索引从0开始，所有数值已-1
-f=open('./DSigRange.txt', encoding='UTF-8')
-Rangename=[]
-for line in f:
-    Rangename.append(eval(line.strip()))
+Rangename=['D1', 'D2','D3','D4','D5','D6','D7','D8','D9','D10','S1X','S1Y','S1Z','S2X','S2Y','S2Z','S3X',
+'S3Y','S3Z','S4X','S4Y','S4Z','S5X','S5Y','S5Z','S6X','S6Y','S6Z','S7X','S7Y','S7Z','S8X','S8Y','S8Z','S9X',
+'S9Y','S9Z','S10X','S10Y','S10Z','S11X','S11Y','S11Z','S12X','S12Y','S12Z','S13X','S13Y','S13Z','S14X','S14Y',
+'S14Z','S15X','S15Y','S15Z','S16X','S16Y','S16Z','S17X','S17Y','S17Z','S18X','S18Y','S18Z','S19X','S19Y','S19Z',
+'S20X','S20Y','S20Z','S21X','S21Y','S21Z','S22X','S22Y','S22Z','S23X','S23Y','S23Z','S24X','S24Y','S24Z','S25X',
+'S25Y','S25Z','S26X','S26Y','S26Z','S27X','S27Y','S27Z','S28X','S28Y','S28Z','S29X','S29Y','S29Z','S30X','S30Y',
+'S30Z','S31X','S31Y','S31Z','S32X','S32Y','S32Z','S33X','S33Y','S33Z','S34X','S34Y','S34Z','S35X','S35Y','S35Z',
+'S36X','S36Y','S36Z','S37X','S37Y','S37Z','S38X','S38Y','S38Z','S39X','S39Y','S39Z','S40X','S40Y','S40Z','S41X',
+'S41Y','S41Z','S42X','S42Y','S42Z','S43X','S43Y','S43Z','S44X','S44Y','S44Z','A1','A2','A3','M1-X','M1-Y','M1-Z',
+'M1-Yaw','M1-Roll','M1-Pitch','Z1','Z31','Z32','Z4']
 DSigRange=[i for i, x in enumerate(Signame) if x in Rangename]
 # 分析锚链张力信号
 # 采用标准差方法计算三一值分析锚链张力信号

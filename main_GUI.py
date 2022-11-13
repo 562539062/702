@@ -7,7 +7,7 @@ from multiprocessing import Process
 from multiprocessing.sharedctypes import Array
 from threading import Thread
 
-from tkcalendar import Calendar,DateEntry
+from Calender import Calendar
 from tkinter import ttk,Frame,filedialog
 from queue import Queue
 
@@ -19,7 +19,15 @@ class GUI:
     def __init__(self):
         self.root = tk.Tk()
         self.root.title('船舶项目 数据前处理 input')
-        self.root.geometry('500x300')
+        self.sw = self.root.winfo_screenwidth()
+        #得到屏幕宽度
+        self.sh = self.root.winfo_screenheight()
+        #得到屏幕高度
+        ww = 500
+        wh = 300
+        x = (self.sw-ww) / 2
+        y = (self.sh-wh) / 2
+        self.root.geometry("%dx%d+%d+%d" %(ww,wh,x,y))
         self.input()
         # self.output()
 
@@ -100,7 +108,11 @@ class GUI:
     def output(self):
         self.output_window = tk.Tk()
         self.output_window.title('船舶项目 数据前处理 output')
-        self.output_window.geometry('350x250')
+        ww = 500
+        wh = 300
+        x = (self.sw-ww) / 2
+        y = (self.sh-wh) / 2
+        self.output_window.geometry("%dx%d+%d+%d" %(ww,wh,x,y))
         frame_output = Frame(self.output_window)
         frame_output.place(relx=0.5, rely=0.5, anchor='center')
 
@@ -159,25 +171,36 @@ class GUI:
 
 
         date_list = os.listdir(self.path.get())
-        sp=str(date_list[0])
-        ep=str(date_list[-1])
         self.output_img_flag = 0 # 日期未被选择过
-        label_date_start = tk.Label(frame_output,text = "起始日期:")
-        label_date_start.grid(row = 4, column = 0)
-        self.date_start = DateEntry(frame_output, text='日期选择',width =9)
-        # self.date_start.bind("<<DateEntrySelected>>", self.print_date)
-        messagebox.showinfo(title='消息提示框', message=sp[0:4]+'/'+sp[4:6]+'/'+sp[6:8])
-        self.date_start.set_date(sp[0:4]+'/'+sp[4:6]+'/'+sp[6:8])
-        self.date_start.grid(row=4, column=1, padx=3,pady=3,sticky='W')
-        label_date_end = tk.Label(frame_output,text = "截至日期:")
-        label_date_end.grid(row = 4, column = 2)
-        self.date_end = DateEntry(frame_output, text='日期选择',width =9)
-        # self.date_end.bind("<<DateEntrySelected>>", self.print_date)
-        self.date_end.set_date(ep[0:4]+'/'+ep[4:6]+'/'+ep[6:8])
-        self.date_end.grid(row=4, column=3, padx=3,pady=3,sticky='W')
+        width, height = frame_output.winfo_reqwidth() + 50, 50 #窗口大小
+        x, y = (frame_output.winfo_screenwidth()  - width )/2, (frame_output.winfo_screenheight() - height)/2#居中位置
         
+        #开始日期
+        sp=str(date_list[0])
+        date_startv = tk.StringVar() #开始日期存于该字符串
+        date_startv.set(sp[0:4]+'-'+sp[4:6]+'-'+sp[6:8])
+        self.date_start = ttk.Entry(frame_output, textvariable = date_startv, width=10)
+        self.date_start.grid(row=4,column=1)
+        sdate_str_gain = lambda: [
+            date_startv.set(date)
+            for date in [Calendar((x-ww/3, y+wh/5), 'ur').selection()] 
+            if date]
+        self.sdate_bu=tk.Button(frame_output, text = '开始日期:', command = sdate_str_gain)
+        self.sdate_bu.grid(row=4,column=0)
 
-        
+        #截止日期
+        ep=str(date_list[-1])
+        date_endv = tk.StringVar() #截至日期存于该字符串
+        date_endv.set(ep[0:4]+'-'+ep[4:6]+'-'+ep[6:8])
+        self.date_end = ttk.Entry(frame_output, textvariable = date_endv, width=10)
+        self.date_end.grid(row=4,column=3)
+        edate_str_gain = lambda: [
+            date_endv.set(date)
+            for date in [Calendar((x, y+wh/5), 'ur').selection()] 
+            if date]
+        self.edate_bu=tk.Button(frame_output, text = '截止日期:', command = edate_str_gain)
+        self.edate_bu.grid(row=4,column=2)   
+
         
         
         self.button_run = tk.Button(frame_output,text="运行",command=self.run)
@@ -211,8 +234,9 @@ class GUI:
     def start_main(self):
         DataPath = self.path.get()
         savepath='../save/'
-        sp=str(self.date_start.get_date())
-        ep=str(self.date_end.get_date())
+        sp=self.date_start.get()
+        ep=self.date_end.get()
+        print("ep is :"+ep)
         startdate=sp[0:4]+sp[5:7]+sp[8:]
         enddate=str(int(ep[0:4]+ep[5:7]+ep[8:])+1)
         runfiles=[]
@@ -271,14 +295,14 @@ class GUI:
         if (self.combobox_1.get() and self.var1.get() != 'None' and self.var2.get() != 'None' and self.var3.get() != 'None' and self.output_img_flag == 1):
             self.var_string = str(self.var1.get())+str(self.var2.get())+str(self.var3.get())
             # 将日期转换为int，比较所选日期是否已保存数据，没数据的日期不能画图
-            date_start = int(str(str(self.date_start.get_date())[0:4]+str(self.date_start.get_date())[5:7]+str(self.date_start.get_date())[8:]))
-            date_end = int(str(str(self.date_end.get_date())[0:4]+str(self.date_end.get_date())[5:7]+str(self.date_end.get_date())[8:]))
+            date_start = int(str(str(self.date_start.get())[0:4]+str(self.date_start.get())[5:7]+str(self.date_start.get())[8:]))
+            date_end = int(str(str(self.date_end.get())[0:4]+str(self.date_end.get())[5:7]+str(self.date_end.get())[8:]))
             path_temp = os.path.join("../save/plot_data/"+self.combobox_1.get()+'/')
             path_list = os.listdir(path=path_temp)
             t_start = int(str(path_list[0])[0:8])
             t_end = int(str(path_list[-1])[0:8])
             if date_start >= t_start and date_end <= t_end:
-                plot(self.combobox_1.get(), self.var_string,self.date_start.get_date(),self.date_end.get_date(), self.path.get())
+                plot(self.combobox_1.get(), self.var_string,self.date_start.get(),self.date_end.get(), self.path.get())
             else:
                 messagebox.showinfo(title='Error', message='数据不全！\n请重新选择日期 或 运行该时间段后查看')
         elif not self.combobox_1.get():
@@ -291,7 +315,7 @@ class GUI:
 
     def print_date(self, *args):
         self.output_img_flag = 1
-        print(self.date_start.get_date())
+        print(self.date_start.get())
 
 
 
