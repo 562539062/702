@@ -61,7 +61,7 @@ class GUI:
 
     def selectPath(self):
         #选择文件path_接收文件地址
-        path_ = filedialog.askdirectory(initialdir='../trydata')
+        path_ = filedialog.askdirectory(initialdir='../newdata')
         #通过replace函数替换绝对文件地址中的/来使文件可被程序读取 
         #注意：\\转义后为\，所以\\\\转义后为\\
         self.path_=path_.replace("/","\\\\")
