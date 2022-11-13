@@ -172,7 +172,7 @@ class GUI:
 
 
         date_list = os.listdir(self.path.get())
-        self.output_img_flag = 0 # 日期未被选择过
+        self.output_img_flag = 1 # 日期未被选择过
         width, height = frame_output.winfo_reqwidth() + 50, 50 #窗口大小
         x, y = (frame_output.winfo_screenwidth()  - width )/2, (frame_output.winfo_screenheight() - height)/2#居中位置
         

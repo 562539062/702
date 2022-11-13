@@ -288,7 +288,7 @@ def createtimeline(runfiles):
         file_min=int(ffilename[10:-2])
         for Segment in range(1,sumSegment+1):
             timeline.append(ffilename[0:4]+'-'+ffilename[4:6]+'-'+ffilename[6:8]+' '+str((file_hour+int((30*(Segment-1)+file_min)/60))%24)+':'+str((file_min+((Segment-1)%2)*30)%60))
-    fun_save('../save/plot_data/time.npy','npy',timeline)
+    return timeline
 
 
 
