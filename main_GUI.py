@@ -70,10 +70,10 @@ class GUI:
 
     def check_button_1(self):
         if self.path.get() and self.combobox_0.get():
-            print(self.path.get())
-            print(" type is: ")
-            print(type(self.path.get()))
-            print(self.datatype)
+            # print(self.path.get())
+            # print(" type is: ")
+            # print(type(self.path.get()))
+            # print(self.datatype)
             # ======================
             # filepath = self.path.get()
             # datatype = self.datatype
@@ -98,7 +98,6 @@ class GUI:
     # output界面
     ######################################
     def output(self):
-        self.msg_queue = Queue() #多进程用的队列
         self.output_window = tk.Tk()
         self.output_window.title('船舶项目 数据前处理 output')
         self.output_window.geometry('350x250')
@@ -125,10 +124,10 @@ class GUI:
 
         # 值的勾选框 Peak_max_wave
         text1 = ["全幅值","峰值","谷值"]
-        text2 = ["有义值","最大值","最小值"]
+        text2 = ["有义值","最大值"]
         text3 = ["合成成分","高频成分","波浪成分"]
         value1 = ['Full_',"Peak_","Valley_"]
-        value2 = ["meaningful_","max_","min_"]
+        value2 = ["meaningful_","max_"]
         value3 = ["syn","high","wave"]
         
         
@@ -146,7 +145,7 @@ class GUI:
             i  = text2.index(text)
             fullr2 = tk.Radiobutton(frame_output, text=text, variable=self.var2, value=value2[i], state='normal')
             fullr2.deselect()
-            fullr2.grid(row=2, column=i, sticky='W')
+            fullr2.grid(row=3, column=i, sticky='W')
 
         self.var3 = tk.StringVar()
         self.var3.set(None)
@@ -154,7 +153,7 @@ class GUI:
             i  = text3.index(text)
             fullr3 = tk.Radiobutton(frame_output, text=text, variable=self.var3, value=value3[i], state='normal')
             fullr1.deselect()
-            fullr3.grid(row=3, column=i, sticky='W')
+            fullr3.grid(row=2, column=i, sticky='W')
 
 
 
@@ -196,7 +195,6 @@ class GUI:
         self.progressbarOne = ttk.Progressbar(frame_output,length=300)
         self.progressbarOne.grid(row=8,columnspan=4,pady=5)        
         # print(frame_output.grid_info)
-        self.output_window.after(30, self.msg_change) # 启动after方法
         self.output_window.mainloop()
         
     def pick_signal(self, *args):
@@ -205,6 +203,7 @@ class GUI:
 #########################
     def run(self):
         main_thread = Thread(target=self.start_main)
+        # self.msg_queue.put(main_thread)
         main_thread.setDaemon(True)
         main_thread.start()
 ########################
